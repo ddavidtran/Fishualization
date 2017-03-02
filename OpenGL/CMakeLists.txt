@@ -58,7 +58,7 @@ if (APPLE)
     set_target_properties(${APP_NAME} PROPERTIES MACOSX_BUNDLE_INFO_STRING "OpenGL boilerplate example app")
 else()
     set(APP_NAME "opengl-boilerplate")
-    add_executable(${APP_NAME} main.cpp particleSystem.cpp particleSystem.h particle.cpp particle.h)
+    add_executable(${APP_NAME} main.cpp particleSystem.cpp particleSystem.h particle.cpp particle.h Objects.cpp Shader.cpp Texture.cpp Utilities.cpp Camera.cpp)
 endif()
 
 

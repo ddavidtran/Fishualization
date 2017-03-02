@@ -5,6 +5,8 @@
 #include <glm/glm.hpp>
 #include <iostream>
 #include "particleSystem.h"
+#include "Shader.hpp"
+#include "Camera.h"
 
 #ifndef M_PI
 #define M_PI (3.141592653589793)
@@ -28,8 +30,21 @@
 #include <GL/glext.h>
 #endif
 
+int SCR_HEIGHT = 900;
+int SCR_WIDTH = 1400;
 
+Camera camera(SCR_HEIGHT, SCR_WIDTH, glm::vec3(5.0f, -6.0f, 5.0f));
 
+Shader myShader, depthShader;
+
+void mouseMoveWrapper(GLFWwindow* window, double mouseX, double mouseY)
+{
+    camera.handleMouseMove(mouseX, mouseY);
+}
+void keypressWrapper(GLFWwindow* window, int theKey, int scancode, int theAction, int mods)
+{
+    camera.handleKeypress(theKey, theAction);
+}
 
 GLFWwindow* Initialize()
 {
@@ -47,7 +62,7 @@ GLFWwindow* Initialize()
 
 // Open a window and create its OpenGL context
     // GLFWwindow* window; // (In the accompanying source code, this variable is global)
-    GLFWwindow* window = glfwCreateWindow( 1440, 900, "Tutorial 01", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow( SCR_WIDTH, SCR_HEIGHT, "Fish Simulation", NULL, NULL);
     if( window == NULL ){
         fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
         glfwTerminate();
@@ -60,8 +75,12 @@ GLFWwindow* Initialize()
         return NULL;
     }
 
-    // Ensure we can capture the escape key being pressed below
-    glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+    // Specify the function which should execute when a key is pressed or released
+    glfwSetKeyCallback(window, keypressWrapper);
+    // Specify the function which should execute when the mouse is moved
+    glfwSetCursorPosCallback(window, mouseMoveWrapper);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
     return window;
 }
 
@@ -71,6 +90,54 @@ int main() {
     GLFWwindow* window = Initialize();
     if(window == NULL)
         return 0;
+
+    glfwSwapInterval(0);
+    myShader.createShader("vertexshader.glsl", "fragmentshader.glsl");
+    depthShader.createShader("depthVertex.glsl", "depthFragment.glsl");
+    glUseProgram(myShader.programID);
+
+    GLint location_time, location_M, location_tex, location_lightView, location_lightSpaceMatrix
+    ,location_lightPos, location_shadowMap, location_viewPos, location_View;
+    float currentTime;
+    glm::vec3 viewPos;
+
+    location_M = glGetUniformLocation(myShader.programID, "M");
+    location_time = glGetUniformLocation(myShader.programID, "time");
+    location_lightSpaceMatrix = glGetUniformLocation(myShader.programID, "lightSpaceMatrix");
+    location_lightPos = glGetUniformLocation(myShader.programID, "lightPos");
+    location_viewPos = glGetUniformLocation(myShader.programID, "viewPos");
+    location_View = glGetUniformLocation(myShader.programID, "V");
+
+    // Setup some OpenGL options
+    glEnable(GL_DEPTH_TEST);
+
+    // Set texture samples
+    glUniform1i(glGetUniformLocation(myShader.programID, "tex"), 0);
+    glUniform1i(glGetUniformLocation(myShader.programID, "shadowMap"), 1);
+
+    // Create matrices for Projection, Model and View
+    float fov=45.0f;
+    glm::mat4 Projection = glm::perspective(fov, (GLfloat) SCR_HEIGHT / (GLfloat) SCR_WIDTH, 0.1f, 10000.0f);
+
+    float angle1=fov/2.0;
+    float angle2=180 - (90 + angle1);
+    float Z = 0.5 * SCR_HEIGHT * sin(glm::radians(angle2))/sin(glm::radians(angle1));
+    glm::mat4 View = glm::lookAt(
+            glm::vec3(SCR_WIDTH/2, SCR_WIDTH/2, Z), // camera position
+            glm::vec3(SCR_WIDTH/2, SCR_WIDTH/2, 0), // look at origin
+            glm::vec3(0, 1, 0)  // Head is up
+    );
+
+    glm::mat4 Model = glm::mat4(1.0f);
+
+    glm::mat4 MVP = Projection * View * Model;
+
+
+    // get version info
+    const GLubyte* renderer = glGetString(GL_RENDERER); // get renderer string
+    const GLubyte* version = glGetString(GL_VERSION); // version as a string
+    printf("Renderer: %s\n", renderer);
+    printf("OpenGL version supported %s\n", version);
 
     particleSystem* swarm = new particleSystem(10);
 
