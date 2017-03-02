@@ -1,8 +1,8 @@
-# Install script for directory: C:/Users/Jakob/Documents/TNM085/GitProjectFishSchool/TNM085/OpenGL/external/glfw/src
+# Install script for directory: /Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/external/glfw/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/Project")
+  set(CMAKE_INSTALL_PREFIX "/usr/local")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 

@@ -4,9 +4,9 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "C:/Users/Jakob/Documents/TNM085/GitProjectFishSchool/TNM085/OpenGL/external/glew/src/glew.c" "C:/Users/Jakob/Documents/TNM085/GitProjectFishSchool/TNM085/OpenGL/cmake-build-debug/CMakeFiles/glew.dir/external/glew/src/glew.c.obj"
+  "/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/external/glew/src/glew.c" "/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/cmake-build-debug/CMakeFiles/glew.dir/external/glew/src/glew.c.o"
   )
-set(CMAKE_C_COMPILER_ID "GNU")
+set(CMAKE_C_COMPILER_ID "Clang")
 
 # Preprocessor definitions for this target.
 set(CMAKE_TARGET_DEFINITIONS_C

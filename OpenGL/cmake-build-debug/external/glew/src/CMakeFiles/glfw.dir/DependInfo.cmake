@@ -4,25 +4,23 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "C:/Users/Jakob/Documents/TNM085/GitProjectFishSchool/TNM085/OpenGL/external/glfw/src/context.c" "C:/Users/Jakob/Documents/TNM085/GitProjectFishSchool/TNM085/OpenGL/cmake-build-debug/external/glew/src/CMakeFiles/glfw.dir/context.c.obj"
-  "C:/Users/Jakob/Documents/TNM085/GitProjectFishSchool/TNM085/OpenGL/external/glfw/src/init.c" "C:/Users/Jakob/Documents/TNM085/GitProjectFishSchool/TNM085/OpenGL/cmake-build-debug/external/glew/src/CMakeFiles/glfw.dir/init.c.obj"
-  "C:/Users/Jakob/Documents/TNM085/GitProjectFishSchool/TNM085/OpenGL/external/glfw/src/input.c" "C:/Users/Jakob/Documents/TNM085/GitProjectFishSchool/TNM085/OpenGL/cmake-build-debug/external/glew/src/CMakeFiles/glfw.dir/input.c.obj"
-  "C:/Users/Jakob/Documents/TNM085/GitProjectFishSchool/TNM085/OpenGL/external/glfw/src/monitor.c" "C:/Users/Jakob/Documents/TNM085/GitProjectFishSchool/TNM085/OpenGL/cmake-build-debug/external/glew/src/CMakeFiles/glfw.dir/monitor.c.obj"
-  "C:/Users/Jakob/Documents/TNM085/GitProjectFishSchool/TNM085/OpenGL/external/glfw/src/wgl_context.c" "C:/Users/Jakob/Documents/TNM085/GitProjectFishSchool/TNM085/OpenGL/cmake-build-debug/external/glew/src/CMakeFiles/glfw.dir/wgl_context.c.obj"
-  "C:/Users/Jakob/Documents/TNM085/GitProjectFishSchool/TNM085/OpenGL/external/glfw/src/win32_init.c" "C:/Users/Jakob/Documents/TNM085/GitProjectFishSchool/TNM085/OpenGL/cmake-build-debug/external/glew/src/CMakeFiles/glfw.dir/win32_init.c.obj"
-  "C:/Users/Jakob/Documents/TNM085/GitProjectFishSchool/TNM085/OpenGL/external/glfw/src/win32_monitor.c" "C:/Users/Jakob/Documents/TNM085/GitProjectFishSchool/TNM085/OpenGL/cmake-build-debug/external/glew/src/CMakeFiles/glfw.dir/win32_monitor.c.obj"
-  "C:/Users/Jakob/Documents/TNM085/GitProjectFishSchool/TNM085/OpenGL/external/glfw/src/win32_time.c" "C:/Users/Jakob/Documents/TNM085/GitProjectFishSchool/TNM085/OpenGL/cmake-build-debug/external/glew/src/CMakeFiles/glfw.dir/win32_time.c.obj"
-  "C:/Users/Jakob/Documents/TNM085/GitProjectFishSchool/TNM085/OpenGL/external/glfw/src/win32_tls.c" "C:/Users/Jakob/Documents/TNM085/GitProjectFishSchool/TNM085/OpenGL/cmake-build-debug/external/glew/src/CMakeFiles/glfw.dir/win32_tls.c.obj"
-  "C:/Users/Jakob/Documents/TNM085/GitProjectFishSchool/TNM085/OpenGL/external/glfw/src/win32_window.c" "C:/Users/Jakob/Documents/TNM085/GitProjectFishSchool/TNM085/OpenGL/cmake-build-debug/external/glew/src/CMakeFiles/glfw.dir/win32_window.c.obj"
-  "C:/Users/Jakob/Documents/TNM085/GitProjectFishSchool/TNM085/OpenGL/external/glfw/src/window.c" "C:/Users/Jakob/Documents/TNM085/GitProjectFishSchool/TNM085/OpenGL/cmake-build-debug/external/glew/src/CMakeFiles/glfw.dir/window.c.obj"
-  "C:/Users/Jakob/Documents/TNM085/GitProjectFishSchool/TNM085/OpenGL/external/glfw/src/winmm_joystick.c" "C:/Users/Jakob/Documents/TNM085/GitProjectFishSchool/TNM085/OpenGL/cmake-build-debug/external/glew/src/CMakeFiles/glfw.dir/winmm_joystick.c.obj"
+  "/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/external/glfw/src/cocoa_init.m" "/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/cmake-build-debug/external/glew/src/CMakeFiles/glfw.dir/cocoa_init.m.o"
+  "/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/external/glfw/src/cocoa_monitor.m" "/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/cmake-build-debug/external/glew/src/CMakeFiles/glfw.dir/cocoa_monitor.m.o"
+  "/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/external/glfw/src/cocoa_window.m" "/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/cmake-build-debug/external/glew/src/CMakeFiles/glfw.dir/cocoa_window.m.o"
+  "/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/external/glfw/src/context.c" "/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/cmake-build-debug/external/glew/src/CMakeFiles/glfw.dir/context.c.o"
+  "/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/external/glfw/src/init.c" "/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/cmake-build-debug/external/glew/src/CMakeFiles/glfw.dir/init.c.o"
+  "/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/external/glfw/src/input.c" "/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/cmake-build-debug/external/glew/src/CMakeFiles/glfw.dir/input.c.o"
+  "/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/external/glfw/src/iokit_joystick.m" "/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/cmake-build-debug/external/glew/src/CMakeFiles/glfw.dir/iokit_joystick.m.o"
+  "/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/external/glfw/src/mach_time.c" "/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/cmake-build-debug/external/glew/src/CMakeFiles/glfw.dir/mach_time.c.o"
+  "/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/external/glfw/src/monitor.c" "/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/cmake-build-debug/external/glew/src/CMakeFiles/glfw.dir/monitor.c.o"
+  "/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/external/glfw/src/nsgl_context.m" "/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/cmake-build-debug/external/glew/src/CMakeFiles/glfw.dir/nsgl_context.m.o"
+  "/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/external/glfw/src/posix_tls.c" "/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/cmake-build-debug/external/glew/src/CMakeFiles/glfw.dir/posix_tls.c.o"
+  "/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/external/glfw/src/window.c" "/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/cmake-build-debug/external/glew/src/CMakeFiles/glfw.dir/window.c.o"
   )
-set(CMAKE_C_COMPILER_ID "GNU")
+set(CMAKE_C_COMPILER_ID "Clang")
 
 # Preprocessor definitions for this target.
 set(CMAKE_TARGET_DEFINITIONS_C
-  "UNICODE"
-  "WINVER=0x0501"
   "_GLFW_USE_CONFIG_H"
   )
 

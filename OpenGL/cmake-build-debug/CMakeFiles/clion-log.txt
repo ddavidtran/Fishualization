@@ -1,6 +1,7 @@
-"C:\Program Files (x86)\JetBrains\CLion 2016.3.2\bin\cmake\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" C:\Users\Jakob\Documents\TNM085\GitProjectFishSchool\TNM085\OpenGL
--- Using Win32 for window creation
--- Using WGL for context creation
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL
+-- Using Cocoa for window creation
+-- Using NSGL for context creation
+-- Building GLFW only for the native architecture
 -- Configuring done
 -- Generating done
--- Build files have been written to: C:/Users/Jakob/Documents/TNM085/GitProjectFishSchool/TNM085/OpenGL/cmake-build-debug
+-- Build files have been written to: /Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/cmake-build-debug
