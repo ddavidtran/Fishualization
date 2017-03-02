@@ -1,0 +1,6 @@
+"C:\Program Files (x86)\JetBrains\CLion 2016.3.2\bin\cmake\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" C:\Users\Jakob\Documents\TNM085\GitProjectFishSchool\TNM085\OpenGL
+-- Using Win32 for window creation
+-- Using WGL for context creation
+-- Configuring done
+-- Generating done
+-- Build files have been written to: C:/Users/Jakob/Documents/TNM085/GitProjectFishSchool/TNM085/OpenGL/cmake-build-debug
