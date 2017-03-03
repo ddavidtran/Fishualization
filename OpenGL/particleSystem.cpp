@@ -13,17 +13,20 @@ particleSystem::particleSystem(int amount) {
     target.z = 0;
     bestCost = 11111111;
     bestPos = target;
-    //fishModel.readOBJ("assets/SALMON.obj");
-    //fishTexture.createTexture("assets/SALMON.tga");
+    fishModel.createSphere(0.1,50);
+    fishTexture.createTexture("C:\\Users\\Jakob\\Documents\\TNM085\\GitProjectFishSchool\\TNM085fish\\OpenGL\\assets\\trex.tga");
 }
 
 //Update the entire swarms movement
 void particleSystem::updateSwarm() {
+    bestCost = 11111111;
     for(const auto it: fishSwarm){
+        vec3Pos newBestPos = bestPos;
         particle neighbours[3];
         findNeighbours(it, neighbours);
-        it->updateParticle(neighbours, target , &bestPos, &bestCost);
+        it->updateParticle(neighbours, target, &bestPos, &newBestPos, &bestCost);
     }
+
 }
 
 //Find neighbours to a particle
@@ -56,12 +59,11 @@ void particleSystem::findNeighbours(particle* p, particle neighbours[]){
     }
 }
 
-void particleSystem::render() {
+void particleSystem::render(Shader shader) {
     for(auto it : fishSwarm)
     {
-
-
-        //glUniformMatrix4fv(location_MV, 1, GL_FALSE, MVstack.getCurrentMatrix());
+        glm::mat4 Model = glm::translate(it->getParticlePos()) * glm::orientation(it->getParticleVel(), glm::vec3(0,1,0));
+        glUniformMatrix4fv(glGetUniformLocation(shader.programID, "M"), 1, GL_FALSE, glm::value_ptr(Model));
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, fishTexture.textureID);
         fishModel.render();

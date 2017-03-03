@@ -10,6 +10,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Utilities.hpp"
 #include <glm/gtx/transform.hpp>
+#include <unistd.h>
 
 #ifndef M_PI
 #define M_PI (3.141592653589793)
@@ -93,12 +94,7 @@ int main() {
     if(window == NULL)
         return 0;
 
-    Objects test;
-    test.createSphere(1.0f, 50);
-    Texture testTex;
-    testTex.createTexture("C:\\Users\\Jakob\\Documents\\TNM085\\GitProjectFishSchool\\TNM085fish\\OpenGL\\assets\\trex.tga");
-
-    glfwSwapInterval(0);
+    glfwSwapInterval(1);
     myShader.createShader("vertexshader.glsl", "fragmentshader.glsl");
     glUseProgram(myShader.programID);
 
@@ -118,11 +114,8 @@ int main() {
     float fov=45.0f;
     glm::mat4 Projection = glm::perspective(fov, (GLfloat) SCR_HEIGHT / (GLfloat) SCR_WIDTH, 0.1f, 10000.0f);
 
-    float angle1=fov/2.0;
-    float angle2=180 - (90 + angle1);
-    float Z = 0.5 * SCR_HEIGHT * sin(glm::radians(angle2))/sin(glm::radians(angle1));
     glm::mat4 View = glm::lookAt(
-            glm::vec3(0,0,5), // camera position
+            glm::vec3(0,0,10), // camera position
             glm::vec3(0, 0, 0), // look at origin
             glm::vec3(0, 1, 0)  // Head is up
     );
@@ -138,7 +131,7 @@ int main() {
 
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
-    particleSystem* swarm = new particleSystem(10);
+    particleSystem* swarm = new particleSystem(40);
 
     /*********************************/
     /*          RENDER               */
@@ -156,17 +149,12 @@ int main() {
 
         swarm->updateSwarm();
 
-        //swarm->render();
         glEnable(GL_COLOR_MATERIAL);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
-        glUniformMatrix4fv(location_M, 1, GL_FALSE, glm::value_ptr(Model));
         glUniformMatrix4fv(location_V, 1, GL_FALSE, glm::value_ptr(View));
         glUniformMatrix4fv(location_P, 1, GL_FALSE, glm::value_ptr(Projection));
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, testTex.textureID);
-        test.render();
+        swarm->render(myShader);
 
         // Swap buffers
         glfwSwapBuffers(window);

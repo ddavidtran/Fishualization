@@ -15,7 +15,7 @@ out vec3 FragPos;
 
 
 void main(){
-  gl_Position = (P * V * M) * vec4(Position, 1.0f);
+  gl_Position = (P * V * M) * vec4(Position, 1.0);
   normal = transpose(inverse(mat3(M))) * Normal;
   FragPos = vec3(M * vec4(Position, 1.0));
   st = TexCoord;

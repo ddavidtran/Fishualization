@@ -8,16 +8,19 @@
 
 #include <vector>
 #include <cmath>
+#include "glm/glm.hpp"
+#include <glm/gtx/transform.hpp>
 
 struct vec3Pos{
 public:
     float x,y,z;
 };
 
-const float C1 = 0.9;   //Global best
-const float C2 = 0.05;  //Neighbour avoid
-const float C3 = 0.2;   //Neighbour attraction
-const float DT = 1;
+const float C1 = 10;   //Global best
+const float C2 = 5;  //Neighbour avoid
+const float C3 = 2;   //Neighbour attraction
+const float DT = 0.01;
+const float REPULSION_RADIUS = 0.7;
 
 class particle {
 private:
@@ -28,9 +31,12 @@ private:
 public:
     particle();
     ~particle(){};
-    void updateParticle(particle neighbours[], vec3Pos target, vec3Pos* bestPos, float* bestCost);
+    void updateParticle(particle neighbours[], vec3Pos target, const vec3Pos* bestPos, vec3Pos* newBestPos, float* bestCost);
     float dist(particle p2);
+	glm::vec3 getParticlePos();
+    glm::vec3 getParticleVel();
 };
+
 
 
 #endif //PROJECT_PARTICLE_H

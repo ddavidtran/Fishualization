@@ -10,6 +10,12 @@
 #include "particle.h"
 #include "Objects.h"
 #include "Texture.hpp"
+#include <glm/gtx/transform.hpp>
+#include "glm/glm.hpp"
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include "Shader.hpp"
+#include <glm/gtx/rotate_vector.hpp>
 
 class particleSystem {
 
@@ -26,7 +32,7 @@ public:
     particleSystem(int amount);
 
     void updateSwarm();
-    void render();
+    void render(Shader shader);
     void findNeighbours(particle *p, particle neighbours[]);
 
 };
