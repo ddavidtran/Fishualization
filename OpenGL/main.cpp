@@ -7,6 +7,9 @@
 #include "particleSystem.h"
 #include "Shader.hpp"
 #include "Camera.h"
+#include <glm/gtc/matrix_transform.hpp>
+#include "Utilities.hpp"
+#include <glm/gtx/transform.hpp>
 
 #ifndef M_PI
 #define M_PI (3.141592653589793)
@@ -35,7 +38,7 @@ int SCR_WIDTH = 1400;
 
 Camera camera(SCR_HEIGHT, SCR_WIDTH, glm::vec3(5.0f, -6.0f, 5.0f));
 
-Shader myShader, depthShader;
+Shader myShader;
 
 void mouseMoveWrapper(GLFWwindow* window, double mouseX, double mouseY)
 {
@@ -54,11 +57,6 @@ GLFWwindow* Initialize()
         fprintf( stderr, "Failed to initialize GLFW\n" );
         return NULL;
     }
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
 // Open a window and create its OpenGL context
     // GLFWwindow* window; // (In the accompanying source code, this variable is global)
@@ -69,7 +67,7 @@ GLFWwindow* Initialize()
         return NULL;
     }
     glfwMakeContextCurrent(window); // Initialize GLEW
-    glewExperimental=true; // Needed in core profile
+    glewExperimental=GL_TRUE; // Needed in core profile
     if (glewInit() != GLEW_OK) {
         fprintf(stderr, "Failed to initialize GLEW\n");
         return NULL;
@@ -87,33 +85,34 @@ GLFWwindow* Initialize()
 
 int main() {
 
+    glewExperimental = GL_TRUE;
+    glewInit();
+    glfwInit();
+
     GLFWwindow* window = Initialize();
     if(window == NULL)
         return 0;
 
+    Objects test;
+    test.createSphere(1.0f, 50);
+    Texture testTex;
+    testTex.createTexture("C:\\Users\\Jakob\\Documents\\TNM085\\GitProjectFishSchool\\TNM085fish\\OpenGL\\assets\\trex.tga");
+
     glfwSwapInterval(0);
     myShader.createShader("vertexshader.glsl", "fragmentshader.glsl");
-    depthShader.createShader("depthVertex.glsl", "depthFragment.glsl");
     glUseProgram(myShader.programID);
 
-    GLint location_time, location_M, location_tex, location_lightView, location_lightSpaceMatrix
-    ,location_lightPos, location_shadowMap, location_viewPos, location_View;
-    float currentTime;
-    glm::vec3 viewPos;
+    GLint location_M, location_P, location_V;
 
     location_M = glGetUniformLocation(myShader.programID, "M");
-    location_time = glGetUniformLocation(myShader.programID, "time");
-    location_lightSpaceMatrix = glGetUniformLocation(myShader.programID, "lightSpaceMatrix");
-    location_lightPos = glGetUniformLocation(myShader.programID, "lightPos");
-    location_viewPos = glGetUniformLocation(myShader.programID, "viewPos");
-    location_View = glGetUniformLocation(myShader.programID, "V");
+    location_V = glGetUniformLocation(myShader.programID, "V");
+    location_P = glGetUniformLocation(myShader.programID, "P");
 
     // Setup some OpenGL options
     glEnable(GL_DEPTH_TEST);
 
     // Set texture samples
     glUniform1i(glGetUniformLocation(myShader.programID, "tex"), 0);
-    glUniform1i(glGetUniformLocation(myShader.programID, "shadowMap"), 1);
 
     // Create matrices for Projection, Model and View
     float fov=45.0f;
@@ -123,14 +122,12 @@ int main() {
     float angle2=180 - (90 + angle1);
     float Z = 0.5 * SCR_HEIGHT * sin(glm::radians(angle2))/sin(glm::radians(angle1));
     glm::mat4 View = glm::lookAt(
-            glm::vec3(SCR_WIDTH/2, SCR_WIDTH/2, Z), // camera position
-            glm::vec3(SCR_WIDTH/2, SCR_WIDTH/2, 0), // look at origin
+            glm::vec3(0,0,5), // camera position
+            glm::vec3(0, 0, 0), // look at origin
             glm::vec3(0, 1, 0)  // Head is up
     );
 
-    glm::mat4 Model = glm::mat4(1.0f);
-
-    glm::mat4 MVP = Projection * View * Model;
+    glm::mat4 Model = glm::mat4();
 
 
     // get version info
@@ -139,15 +136,40 @@ int main() {
     printf("Renderer: %s\n", renderer);
     printf("OpenGL version supported %s\n", version);
 
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+
     particleSystem* swarm = new particleSystem(10);
 
-
+    /*********************************/
+    /*          RENDER               */
+    /*********************************/
     do{
-        // Draw nothing, see you in tutorial 2 !
+
+        double x = camera.getXPos();
+        double y = -5.5;
+        double z = camera.getZPos();
+        glm::vec3 lightPos = glm::vec3(1.0, 1.0, 1.0);
+
+        //Poll and process events
+        glfwPollEvents();
+        Utilities::displayFPS(window);
+
         swarm->updateSwarm();
+
+        //swarm->render();
+        glEnable(GL_COLOR_MATERIAL);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+        glUniformMatrix4fv(location_M, 1, GL_FALSE, glm::value_ptr(Model));
+        glUniformMatrix4fv(location_V, 1, GL_FALSE, glm::value_ptr(View));
+        glUniformMatrix4fv(location_P, 1, GL_FALSE, glm::value_ptr(Projection));
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, testTex.textureID);
+        test.render();
+
         // Swap buffers
         glfwSwapBuffers(window);
-        glfwPollEvents();
 
     } // Check if the ESC key was pressed or the window was closed
     while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&

@@ -13,6 +13,8 @@ particleSystem::particleSystem(int amount) {
     target.z = 0;
     bestCost = 11111111;
     bestPos = target;
+    //fishModel.readOBJ("assets/SALMON.obj");
+    //fishTexture.createTexture("assets/SALMON.tga");
 }
 
 //Update the entire swarms movement
@@ -52,4 +54,17 @@ void particleSystem::findNeighbours(particle* p, particle neighbours[]){
             neighbours[2] = *it;
         }
     }
+}
+
+void particleSystem::render() {
+    for(auto it : fishSwarm)
+    {
+
+
+        //glUniformMatrix4fv(location_MV, 1, GL_FALSE, MVstack.getCurrentMatrix());
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, fishTexture.textureID);
+        fishModel.render();
+    }
+
 }

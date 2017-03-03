@@ -8,6 +8,8 @@
 
 #include <vector>
 #include "particle.h"
+#include "Objects.h"
+#include "Texture.hpp"
 
 class particleSystem {
 
@@ -17,12 +19,14 @@ private:
     vec3Pos bestPos;
     vec3Pos target;
     int fishAmount;
+    Objects fishModel;
+    Texture fishTexture;
 
 public:
     particleSystem(int amount);
 
     void updateSwarm();
-
+    void render();
     void findNeighbours(particle *p, particle neighbours[]);
 
 };

@@ -45,7 +45,7 @@ void particle::updateParticle(particle neighbours[], vec3Pos target, vec3Pos* be
     //Update best cost and best position
     costFunc(target, bestCost, bestPos);
 
-    std::cout << "POSITION: " << this->pos.x << " " << this->pos.y << " " <<this->pos.z << std::endl;
+    //std::cout << "POSITION: " << this->pos.x << " " << this->pos.y << " " <<this->pos.z << std::endl;
 }
 
 //Distance to another particle
