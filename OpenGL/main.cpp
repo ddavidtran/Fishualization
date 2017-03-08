@@ -34,10 +34,10 @@
 #include <GL/glext.h>
 #endif
 
-int SCR_HEIGHT = 900;
-int SCR_WIDTH = 1400;
+int SCR_HEIGHT = 1800;
+int SCR_WIDTH = 2500;
 
-Camera camera(SCR_HEIGHT, SCR_WIDTH, glm::vec3(5.0f, -6.0f, 5.0f));
+Camera camera(SCR_HEIGHT, SCR_WIDTH, glm::vec3(0.0f, 0.0f, 0.0f));
 
 Shader myShader;
 
@@ -98,28 +98,28 @@ int main() {
     myShader.createShader("vertexshader.glsl", "fragmentshader.glsl");
     glUseProgram(myShader.programID);
 
-    GLint location_M, location_P, location_V;
+    GLint location_M, location_P, location_V, location_lightPos, location_viewPos;
 
     location_M = glGetUniformLocation(myShader.programID, "M");
     location_V = glGetUniformLocation(myShader.programID, "V");
     location_P = glGetUniformLocation(myShader.programID, "P");
+    location_viewPos = glGetUniformLocation(myShader.programID, "viewPos");
+    location_lightPos = glGetUniformLocation(myShader.programID, "lightPos");
 
     // Setup some OpenGL options
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_COLOR_MATERIAL);
 
-    // Set texture samples
+
+    // Set samples
     glUniform1i(glGetUniformLocation(myShader.programID, "tex"), 0);
+
+    glm::vec3 viewPos = glm::vec3(0.0f,0.0f,10.0f);
+    glm::vec3 lightPos = glm::vec3(0.0f,3.0f,0.0f);
 
     // Create matrices for Projection, Model and View
     float fov=45.0f;
-    glm::mat4 Projection = glm::perspective(fov, (GLfloat) SCR_HEIGHT / (GLfloat) SCR_WIDTH, 0.1f, 10000.0f);
-
-    glm::mat4 View = glm::lookAt(
-            glm::vec3(0,0,10), // camera position
-            glm::vec3(0, 0, 0), // look at origin
-            glm::vec3(0, 1, 0)  // Head is up
-    );
-
+    glm::mat4 Projection = glm::perspective(fov, (GLfloat) SCR_HEIGHT / (GLfloat) SCR_WIDTH, 0.1f, 1000.0f);
     glm::mat4 Model = glm::mat4();
 
 
@@ -131,30 +131,37 @@ int main() {
 
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
-    particleSystem* swarm = new particleSystem(40);
+    particleSystem* swarm = new particleSystem(70);
 
     /*********************************/
     /*          RENDER               */
     /*********************************/
     do{
+        camera.move(DT);
+        glm::vec3 foodPos = glm::vec3(camera.getMouseX(), camera.getMouseY(), camera.getZPos());
 
-        double x = camera.getXPos();
-        double y = -5.5;
-        double z = camera.getZPos();
-        glm::vec3 lightPos = glm::vec3(1.0, 1.0, 1.0);
+        std::cout << foodPos.x << " " << foodPos.y << " " << foodPos.z << std::endl;
+        glm::mat4 View = glm::lookAt(
+                viewPos, // camera position
+                glm::vec3(0, 0, 0), // look at origin
+                glm::vec3(0, 1, 0)  // Head is up
+        );
+
+        //lightPos = foodPos + glm::vec3(0.0,3.0,0.0);
+
+        glUniformMatrix4fv(location_viewPos, 1, GL_FALSE, glm::value_ptr(viewPos));
+        glUniformMatrix4fv(location_lightPos, 1, GL_FALSE, glm::value_ptr(lightPos));
+        glUniformMatrix4fv(location_V, 1, GL_FALSE, glm::value_ptr(View));
+        glUniformMatrix4fv(location_P, 1, GL_FALSE, glm::value_ptr(Projection));
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        swarm->setTarget(foodPos);
+        swarm->updateSwarm();
+        swarm->render(myShader);
 
         //Poll and process events
         glfwPollEvents();
         Utilities::displayFPS(window);
-
-        swarm->updateSwarm();
-
-        glEnable(GL_COLOR_MATERIAL);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        glUniformMatrix4fv(location_V, 1, GL_FALSE, glm::value_ptr(View));
-        glUniformMatrix4fv(location_P, 1, GL_FALSE, glm::value_ptr(Projection));
-        swarm->render(myShader);
 
         // Swap buffers
         glfwSwapBuffers(window);

@@ -28,6 +28,11 @@ protected:
 	float movementSpeedFactor; // Controls how fast the camera moves
 	float pitchSensitivity;    // Controls how sensitive mouse movements affect looking up and down
 	float yawSensitivity;      // Controls how sensitive mouse movements affect looking left and right
+	float mouseSensitivity;
+
+	// Mouse Positions
+	float MouseX;
+	float MouseY;
 
 								// Window size in pixels and where the midpoint of it falls
 	int windowWidth;
@@ -76,11 +81,15 @@ public:
 	double getYPos()           const { return position.y; }
 	double getZPos()           const { return position.z; }
 
+	double getMouseX() const { return MouseX; }
+	double getMouseY() const { return MouseY; }
+
 	// Rotation getters
 	glm::vec3 getRotation() const { return rotation; }
 	double getXRot()           const { return rotation.x; }
 	double getYRot()           const { return rotation.y; }
 	double getZRot()           const { return rotation.z; }
+
 
 	//viewDirection getter
 	glm::vec3 getViewDirection() const { return viewDirection; }

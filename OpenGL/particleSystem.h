@@ -22,10 +22,10 @@ class particleSystem {
 private:
     std::vector<particle*> fishSwarm;
     float bestCost;
-    vec3Pos bestPos;
-    vec3Pos target;
+    glm::vec3 bestPos;
+    glm::vec3 target;
     int fishAmount;
-    Objects fishModel;
+    Objects fishModel, food;
     Texture fishTexture;
 
 public:
@@ -33,6 +33,7 @@ public:
 
     void updateSwarm();
     void render(Shader shader);
+    void setTarget(glm::vec3 newTarget);
     void findNeighbours(particle *p, particle neighbours[]);
 
 };

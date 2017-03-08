@@ -55,10 +55,10 @@ for it = 0:dt:30
         end
         % Calculate velocity (Pv) of each fish and position (Px)
         fish(i).Vel = fish(i).Vel + rand()*C1*(BestPos - fish(i).Pos) ...
-            - rand()*C2*Repulsion*(fish(i).Pos - fish(NeighbourIdx(i,2)).Pos) ...
-            + Slowdown*(rand()*C3*(fish(i).Pos - fish(NeighbourIdx(i,2)).Pos) ...
-            + 0.7*rand()*C3*(fish(i).Pos - fish(NeighbourIdx(i,3)).Pos) ...
-            + 0.5*rand()*C3*(fish(i).Pos - fish(NeighbourIdx(i,4)).Pos));
+            + rand()*C2*Repulsion*(fish(i).Pos - fish(NeighbourIdx(i,2)).Pos) ...
+            - Slowdown*(rand()*C3*(fish(i).Pos - fish(NeighbourIdx(i,2)).Pos) ...
+            - 0.7*rand()*C3*(fish(i).Pos - fish(NeighbourIdx(i,3)).Pos) ...
+            - 0.5*rand()*C3*(fish(i).Pos - fish(NeighbourIdx(i,4)).Pos));
 
         % Cap speed of fish
 
@@ -80,11 +80,11 @@ for it = 0:dt:30
         % Plot fishes
         %scatter3(Px(:,1), Px(:,2), Px(:,3)); 
         %scatter(Px(:,1), Px(:,2)); 
-        quiver(Px(:,1), Px(:,2),Vx(:,1), Vx(:,2));
-        %quiver3(Px(:,1), Px(:,2),Px(:,3),Vx(:,1), Vx(:,2), Vx(:,3));
+        %quiver(Px(:,1), Px(:,2),Vx(:,1), Vx(:,2));
+        quiver3(Px(:,1), Px(:,2),Px(:,3),Vx(:,1), Vx(:,2), Vx(:,3));
         % Axis follows fish target
         % axis([Pg(1)-1.5 Pg(1)+1.5 Pg(2)-1.5 Pg(2)+1.5 Pg(3)-1.5 Pg(3)+1.5]);
-        axis([-2 2 -2 2])
-        %axis([-2 2 -2 2 -2 2])
+        %axis([-2 2 -2 2])
+        axis([-2 2 -2 2 -2 2])
         pause(dt);
 end

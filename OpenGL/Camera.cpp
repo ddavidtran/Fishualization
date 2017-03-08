@@ -32,6 +32,7 @@ void Camera::initCamera(glm::vec3 pos)
 
 	pitchSensitivity = 0.003; // How sensitive mouse movements affect looking up and down
 	yawSensitivity = 0.003; // How sensitive mouse movements affect looking left and right
+	mouseSensitivity = 0.001; // How sensitive mouseX and mouseY is to mouse movements
 
 						  // To begin with, we aren't holding down any keys
 	holdingForward = false;
@@ -49,6 +50,9 @@ const double Camera::toRads(const double &theAngleInDegrees) const
 // Function to deal with mouse position changes
 void Camera::handleMouseMove( int mouseX, int mouseY)
 {
+	MouseX = mouseX * mouseSensitivity;
+	MouseY = -mouseY * mouseSensitivity;
+
 	// Calculate our horizontal and vertical mouse movement from middle of the window
 	double horizMovement = (mouseX) * yawSensitivity;
 	double vertMovement = (mouseY) * pitchSensitivity;
