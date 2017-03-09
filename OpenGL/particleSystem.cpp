@@ -66,7 +66,7 @@ void particleSystem::render(Shader shader) {
     for(auto it : fishSwarm)
     {
         glm::mat4 Model = glm::translate(it->getParticlePos()) *
-                          glm::orientation(it->getParticleVel(), glm::vec3(0,1,0)) *
+                          glm::orientation(it->getParticleVel(), glm::vec3(0,0,1)) *
                           glm::rotate(45.0f, glm::vec3(1.0f, 0.0f, 2.0f)) *
                           glm::scale(glm::vec3(0.2f, 0.2f, 0.2f));
         glUniformMatrix4fv(glGetUniformLocation(shader.programID, "M"), 1, GL_FALSE, glm::value_ptr(Model));
