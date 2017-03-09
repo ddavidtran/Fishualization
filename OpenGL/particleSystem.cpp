@@ -9,11 +9,15 @@ particleSystem::particleSystem(int amount) {
     fishAmount = amount;
     for(int i = 0; i<fishAmount; i++) { fishSwarm.push_back(new particle()); }
     target = glm::vec3(0,0,0);
+    sharkPos = glm::vec3(0,0,0);
+    sharkPosPrev = sharkPos;
     bestCost = 11111111;
     bestPos = target;
     fishModel.readOBJ("C:\\Users\\Jakob\\Documents\\TNM085\\GitProjectFishSchool\\TNM085fish\\OpenGL\\assets\\trex.obj");
     fishTexture.createTexture("C:\\Users\\Jakob\\Documents\\TNM085\\GitProjectFishSchool\\TNM085fish\\OpenGL\\assets\\trex.tga");
-    food.createSphere(0.2,30);
+    shark.readOBJ("C:\\Users\\Jakob\\Documents\\TNM085\\GitProjectFishSchool\\TNM085fish\\OpenGL\\assets\\stormtrooper.obj");
+    sharkTexture.createTexture("C:\\Users\\Jakob\\Documents\\TNM085\\GitProjectFishSchool\\TNM085fish\\OpenGL\\assets\\greatwhiteshark.tga");
+    food.createSphere(0.1,30);
 }
 
 //Update the entire swarms movement
@@ -23,7 +27,7 @@ void particleSystem::updateSwarm() {
     for(const auto it: fishSwarm){
         particle neighbours[3];
         findNeighbours(it, neighbours);
-        it->updateParticle(neighbours, target, bestPos, &newBestPos, &bestCost);
+        it->updateParticle(neighbours, target, bestPos, &newBestPos, &bestCost, glm::vec3());
     }
     bestPos = newBestPos;
 }
@@ -63,12 +67,20 @@ void particleSystem::render(Shader shader) {
     {
         glm::mat4 Model = glm::translate(it->getParticlePos()) *
                           glm::orientation(it->getParticleVel(), glm::vec3(0,1,0)) *
-                          glm::rotate(270.0f, glm::vec3(1.0f, 0.0f, 0.0f)) *
+                          glm::rotate(45.0f, glm::vec3(1.0f, 0.0f, 2.0f)) *
                           glm::scale(glm::vec3(0.2f, 0.2f, 0.2f));
         glUniformMatrix4fv(glGetUniformLocation(shader.programID, "M"), 1, GL_FALSE, glm::value_ptr(Model));
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, fishTexture.textureID);
         fishModel.render();
+
+        Model = glm::translate(sharkPos) *
+                glm::orientation(sharkPos - sharkPosPrev, glm::vec3(0,0,0)) *
+                glm::scale(glm::vec3(0.4,.4,0.4));
+        glUniformMatrix4fv(glGetUniformLocation(shader.programID, "M"), 1, GL_FALSE, glm::value_ptr(Model));
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, sharkTexture.textureID);
+        shark.render();
 
         Model = glm::translate(target);
         glUniformMatrix4fv(glGetUniformLocation(shader.programID, "M"), 1, GL_FALSE, glm::value_ptr(Model));
@@ -79,4 +91,9 @@ void particleSystem::render(Shader shader) {
 
 void particleSystem::setTarget(glm::vec3 newTarget) {
     target = newTarget;
+}
+
+void particleSystem::setShark(glm::vec3 newSharkPos) {
+    sharkPosPrev = sharkPos;
+    sharkPos = newSharkPos;
 }

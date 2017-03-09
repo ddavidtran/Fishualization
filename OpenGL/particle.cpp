@@ -16,7 +16,8 @@ particle::particle() {
 }
 
 //Update position, velocity of each particle
-void particle::updateParticle(particle *neighbours, glm::vec3 target, glm::vec3 bestPos, glm::vec3 *newBestPos, float *bestCost){
+void particle::updateParticle(particle *neighbours, glm::vec3 target, glm::vec3 bestPos, glm::vec3 *newBestPos, float *bestCost,
+                              glm::vec3 sharkPos) {
 
     float repulsion = 0.0f;
     float slowdown = 1.0f;
@@ -28,17 +29,17 @@ void particle::updateParticle(particle *neighbours, glm::vec3 target, glm::vec3 
     }
 
     //Update velocity
-    vel =   vel + (C1 * ((float) rand() / (RAND_MAX)) * slowdown * glm::vec3(bestPos - pos)
-                - C2 * ((float) rand() / (RAND_MAX)) * repulsion* glm::vec3(neighbours[1].pos - pos)
-                + C3 * ((float) rand() / (RAND_MAX)) * slowdown * glm::vec3(neighbours[2].pos - pos))
+    vel =   vel + (C1 * ((float) rand() / (RAND_MAX))* slowdown  * glm::vec3(bestPos - pos)
+                - C2 * ((float) rand() / (RAND_MAX)) * repulsion * glm::normalize(neighbours[1].pos - pos)
+                + C3 * ((float) rand() / (RAND_MAX)) * slowdown  * glm::vec3(neighbours[2].pos - pos))
                 * TURN_RATE;
 
     //Calculate magnitude of velocity
     float velMagnitude = sqrtf((float)pow(vel.x, 2) + (float)pow(vel.y, 2) + (float)pow(vel.z, 2));
 
     //Cap velocity
-    if(velMagnitude > 1.0f)
-        vel /= velMagnitude * SPEED_CAP;
+    if(velMagnitude > SPEED_CAP)
+        vel = (vel / velMagnitude) * (SPEED_CAP);
 
     //Update position
     pos = pos + vel * DT;

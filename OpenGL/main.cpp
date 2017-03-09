@@ -86,13 +86,13 @@ GLFWwindow* Initialize()
 
 int main() {
 
-    glewExperimental = GL_TRUE;
-    glewInit();
-    glfwInit();
-
     GLFWwindow* window = Initialize();
     if(window == NULL)
         return 0;
+
+    glewExperimental = GL_TRUE;
+    glewInit();
+    glfwInit();
 
     glfwSwapInterval(1);
     myShader.createShader("vertexshader.glsl", "fragmentshader.glsl");
@@ -133,14 +133,31 @@ int main() {
 
     particleSystem* swarm = new particleSystem(70);
 
+    bool sharkControl = false;
+    glm::vec3 foodPos;
+    glm::vec3 sharkPos;
+
     /*********************************/
     /*          RENDER               */
     /*********************************/
     do{
         camera.move(DT);
-        glm::vec3 foodPos = glm::vec3(camera.getMouseX(), camera.getMouseY(), camera.getZPos());
+        if(glfwGetKey(window, GLFW_KEY_E ) == GLFW_PRESS)
+        {
+            if(sharkControl)
+                sharkControl = false;
+            else
+                sharkControl = true;
+        }
+        if(sharkControl) {
+            sharkPos = glm::vec3(camera.getMouseX(), camera.getMouseY(), camera.getZPos());
+            std::cout << sharkPos.x << " " << sharkPos.y << std::endl;
+        }
+        else {
+            foodPos = glm::vec3(camera.getMouseX(), camera.getMouseY(), camera.getZPos());
+            std::cout << foodPos.x << " " << foodPos.y << std::endl;
+        }
 
-        std::cout << foodPos.x << " " << foodPos.y << " " << foodPos.z << std::endl;
         glm::mat4 View = glm::lookAt(
                 viewPos, // camera position
                 glm::vec3(0, 0, 0), // look at origin
@@ -153,8 +170,10 @@ int main() {
         glUniformMatrix4fv(location_lightPos, 1, GL_FALSE, glm::value_ptr(lightPos));
         glUniformMatrix4fv(location_V, 1, GL_FALSE, glm::value_ptr(View));
         glUniformMatrix4fv(location_P, 1, GL_FALSE, glm::value_ptr(Projection));
+        glUniform1f(glGetUniformLocation(myShader.programID, "time"), glfwGetTime());
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        swarm->setShark(sharkPos);
         swarm->setTarget(foodPos);
         swarm->updateSwarm();
         swarm->render(myShader);

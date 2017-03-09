@@ -24,9 +24,11 @@ private:
     float bestCost;
     glm::vec3 bestPos;
     glm::vec3 target;
+    glm::vec3 sharkPos;
+    glm::vec3 sharkPosPrev;
     int fishAmount;
-    Objects fishModel, food;
-    Texture fishTexture;
+    Objects fishModel, food, shark;
+    Texture fishTexture, sharkTexture;
 
 public:
     particleSystem(int amount);
@@ -34,6 +36,7 @@ public:
     void updateSwarm();
     void render(Shader shader);
     void setTarget(glm::vec3 newTarget);
+    void setShark(glm::vec3 newSharkPos);
     void findNeighbours(particle *p, particle neighbours[]);
 
 };
