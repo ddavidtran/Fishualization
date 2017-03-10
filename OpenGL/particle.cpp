@@ -16,8 +16,7 @@ particle::particle() {
 }
 
 //Update position, velocity of each particle
-void particle::updateParticle(particle *neighbours, glm::vec3 target, glm::vec3 bestPos, glm::vec3 *newBestPos, float *bestCost,
-                              glm::vec3 sharkPos) {
+void particle::updateParticle(particle *neighbours, glm::vec3 target, glm::vec3 bestPos, glm::vec3 *newBestPos, float *bestCost) {
 
     float repulsion = 0.0f;
     float slowdown = 1.0f;
@@ -25,17 +24,18 @@ void particle::updateParticle(particle *neighbours, glm::vec3 target, glm::vec3 
     if(distToNeighbour < REPULSION_RADIUS)
     {
         repulsion = 1.0f/distToNeighbour;
-        slowdown = 0.2f;
+        slowdown = 0.4f;
     }
+
 
     //Update velocity
     vel =   vel + (C1 * ((float) rand() / (RAND_MAX))* slowdown  * glm::vec3(bestPos - pos)
                 - C2 * ((float) rand() / (RAND_MAX)) * repulsion * glm::normalize(neighbours[1].pos - pos)
                 + C3 * ((float) rand() / (RAND_MAX)) * slowdown  * glm::vec3(neighbours[2].pos - pos))
-                * TURN_RATE;
+                * TURN_RATE * distToPoint(target);
 
     //Calculate magnitude of velocity
-    float velMagnitude = sqrtf((float)pow(vel.x, 2) + (float)pow(vel.y, 2) + (float)pow(vel.z, 2));
+    float velMagnitude = getVelMagnitude();
 
     //Cap velocity
     if(velMagnitude > SPEED_CAP)
@@ -71,3 +71,12 @@ glm::vec3 particle::getParticleVel() {
 float particle::dist(particle p) {
     return sqrtf((float)pow(pos.x - p.pos.x, 2) + (float)pow(pos.y - p.pos.y, 2) + (float)pow(pos.z - p.pos.z,2));
 }
+
+float particle::getVelMagnitude() {
+    return sqrtf((float)pow(vel.x, 2) + (float)pow(vel.y, 2) + (float)pow(vel.z,2));
+}
+
+float particle::distToPoint(glm::vec3 point) {
+    return sqrtf((float)pow(pos.x - point.x, 2) + (float)pow(pos.y - point.y, 2) + (float)pow(pos.z - point.z,2));
+}
+

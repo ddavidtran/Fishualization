@@ -11,6 +11,8 @@
 #include "Utilities.hpp"
 #include <glm/gtx/transform.hpp>
 #include <unistd.h>
+#include <pthread.h>
+#include <thread>
 
 #ifndef M_PI
 #define M_PI (3.141592653589793)
@@ -35,7 +37,7 @@
 #endif
 
 int SCR_HEIGHT = 1800;
-int SCR_WIDTH = 2500;
+int SCR_WIDTH = 1800;
 
 Camera camera(SCR_HEIGHT, SCR_WIDTH, glm::vec3(0.0f, 0.0f, 0.0f));
 
@@ -109,16 +111,25 @@ int main() {
     // Setup some OpenGL options
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_COLOR_MATERIAL);
-
+    glm::vec3 fogcolor = glm::vec3(0.5, 0.5, 0.7);
+    //glClearColor(fogcolor.x ,fogcolor.y, fogcolor.z, 1);//Background color
+    glClearDepth(1);
 
     // Set samples
     glUniform1i(glGetUniformLocation(myShader.programID, "tex"), 0);
+    glUniform3fv(glGetUniformLocation(myShader.programID, "fogcolor"), GL_FALSE, glm::value_ptr(fogcolor));
 
-    glm::vec3 viewPos = glm::vec3(0.0f,0.0f,10.0f);
-    glm::vec3 lightPos = glm::vec3(0.0f,3.0f,0.0f);
+    glm::vec3 viewPos = glm::vec3(0.0f,1.0f,1.0f);
+    glm::vec3 lightPos = glm::vec3(0.0f,2.0f,0.0f);
+
+    glm::mat4 View = glm::lookAt(
+            viewPos, // camera position
+            glm::vec3(0, 0, 0), // look at origin
+            glm::vec3(0, 1, 0)  // Head is up
+    );
 
     // Create matrices for Projection, Model and View
-    float fov=45.0f;
+    float fov=90.0f;
     glm::mat4 Projection = glm::perspective(fov, (GLfloat) SCR_HEIGHT / (GLfloat) SCR_WIDTH, 0.1f, 1000.0f);
     glm::mat4 Model = glm::mat4();
 
@@ -129,51 +140,33 @@ int main() {
     printf("Renderer: %s\n", renderer);
     printf("OpenGL version supported %s\n", version);
 
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
-    particleSystem* swarm = new particleSystem(70);
+    particleSystem* swarm = new particleSystem(150);
 
-    bool sharkControl = false;
     glm::vec3 foodPos;
-    glm::vec3 sharkPos;
+
+    // When MAGnifying the image (no bigger mipmap available), use LINEAR filtering
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // When MINifying the image, use a LINEAR blend of two mipmaps, each filtered LINEARLY too
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    // Generate mipmaps, by the way.
+    glGenerateMipmap(GL_TEXTURE_2D);
 
     /*********************************/
     /*          RENDER               */
     /*********************************/
     do{
         camera.move(DT);
-        if(glfwGetKey(window, GLFW_KEY_E ) == GLFW_PRESS)
-        {
-            if(sharkControl)
-                sharkControl = false;
-            else
-                sharkControl = true;
-        }
-        if(sharkControl) {
-            sharkPos = glm::vec3(camera.getMouseX(), camera.getMouseY(), camera.getZPos());
-            std::cout << sharkPos.x << " " << sharkPos.y << std::endl;
-        }
-        else {
-            foodPos = glm::vec3(camera.getMouseX(), camera.getMouseY(), camera.getZPos());
-            std::cout << foodPos.x << " " << foodPos.y << std::endl;
-        }
+        foodPos = glm::vec3(camera.getMouseX(), camera.getMouseY(), camera.getZPos());
 
-        glm::mat4 View = glm::lookAt(
-                viewPos, // camera position
-                glm::vec3(0, 0, 0), // look at origin
-                glm::vec3(0, 1, 0)  // Head is up
-        );
 
-        //lightPos = foodPos + glm::vec3(0.0,3.0,0.0);
-
-        glUniformMatrix4fv(location_viewPos, 1, GL_FALSE, glm::value_ptr(viewPos));
-        glUniformMatrix4fv(location_lightPos, 1, GL_FALSE, glm::value_ptr(lightPos));
+        glUniform3fv(location_viewPos, GL_FALSE, glm::value_ptr(viewPos));
+        glUniform3fv(location_lightPos, GL_FALSE, glm::value_ptr(lightPos));
         glUniformMatrix4fv(location_V, 1, GL_FALSE, glm::value_ptr(View));
         glUniformMatrix4fv(location_P, 1, GL_FALSE, glm::value_ptr(Projection));
-        glUniform1f(glGetUniformLocation(myShader.programID, "time"), glfwGetTime());
+        glUniform1f(glGetUniformLocation(myShader.programID, "time"), (float)glfwGetTime());
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        swarm->setShark(sharkPos);
         swarm->setTarget(foodPos);
         swarm->updateSwarm();
         swarm->render(myShader);

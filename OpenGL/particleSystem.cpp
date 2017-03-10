@@ -10,24 +10,26 @@ particleSystem::particleSystem(int amount) {
     for(int i = 0; i<fishAmount; i++) { fishSwarm.push_back(new particle()); }
     target = glm::vec3(0,0,0);
     sharkPos = glm::vec3(0,0,0);
-    sharkPosPrev = sharkPos;
     bestCost = 11111111;
     bestPos = target;
-    fishModel.readOBJ("C:\\Users\\Jakob\\Documents\\TNM085\\GitProjectFishSchool\\TNM085fish\\OpenGL\\assets\\trex.obj");
-    fishTexture.createTexture("C:\\Users\\Jakob\\Documents\\TNM085\\GitProjectFishSchool\\TNM085fish\\OpenGL\\assets\\trex.tga");
-    shark.readOBJ("C:\\Users\\Jakob\\Documents\\TNM085\\GitProjectFishSchool\\TNM085fish\\OpenGL\\assets\\stormtrooper.obj");
-    sharkTexture.createTexture("C:\\Users\\Jakob\\Documents\\TNM085\\GitProjectFishSchool\\TNM085fish\\OpenGL\\assets\\greatwhiteshark.tga");
-    food.createSphere(0.1,30);
+    fishModel.readOBJ("C:\\Users\\Jakob\\Documents\\TNM085\\GitProjectFishSchool\\TNM085fish\\OpenGL\\assets\\fish.obj");
+    fishTexture.createTexture("C:\\Users\\Jakob\\Documents\\TNM085\\GitProjectFishSchool\\TNM085fish\\OpenGL\\assets\\fish.tga");
+    ground.readOBJ("C:\\Users\\Jakob\\Documents\\TNM085\\GitProjectFishSchool\\TNM085fish\\OpenGL\\assets\\ground.obj");
+    foodTexture.createTexture("C:\\Users\\Jakob\\Documents\\TNM085\\GitProjectFishSchool\\TNM085fish\\OpenGL\\assets\\Bread.tga");
+    food.readOBJ("C:\\Users\\Jakob\\Documents\\TNM085\\GitProjectFishSchool\\TNM085fish\\OpenGL\\assets\\bread.obj");
 }
 
 //Update the entire swarms movement
 void particleSystem::updateSwarm() {
     bestCost = 11111111;
     glm::vec3 newBestPos = bestPos;
+
     for(const auto it: fishSwarm){
-        particle neighbours[3];
-        findNeighbours(it, neighbours);
-        it->updateParticle(neighbours, target, bestPos, &newBestPos, &bestCost, glm::vec3());
+        //if(glfwGetTime() < 10) {
+            particle neighbours[3];
+            findNeighbours(it, neighbours);
+            it->updateParticle(neighbours, target, bestPos, &newBestPos, &bestCost);
+        //}
     }
     bestPos = newBestPos;
 }
@@ -67,23 +69,26 @@ void particleSystem::render(Shader shader) {
     {
         glm::mat4 Model = glm::translate(it->getParticlePos()) *
                           glm::orientation(it->getParticleVel(), glm::vec3(0,0,1)) *
-                          glm::rotate(45.0f, glm::vec3(1.0f, 0.0f, 2.0f)) *
-                          glm::scale(glm::vec3(0.2f, 0.2f, 0.2f));
+                          glm::scale(glm::vec3(0.5f, 0.2f, 0.2f));
         glUniformMatrix4fv(glGetUniformLocation(shader.programID, "M"), 1, GL_FALSE, glm::value_ptr(Model));
+        glUniform1i(glGetUniformLocation(shader.programID, "fishes"), true);
         glActiveTexture(GL_TEXTURE0);
+        float fishspeed =  it->getVelMagnitude()/SPEED_CAP;
+        glUniform1f(glGetUniformLocation(shader.programID, "fishspeed"), fishspeed);
+
         glBindTexture(GL_TEXTURE_2D, fishTexture.textureID);
         fishModel.render();
 
-        Model = glm::translate(sharkPos) *
-                glm::orientation(sharkPos - sharkPosPrev, glm::vec3(0,0,0)) *
-                glm::scale(glm::vec3(0.4,.4,0.4));
+        glUniform1i(glGetUniformLocation(shader.programID, "fishes"), false);
+        Model = glm::translate(glm::vec3(0,-1,0)) *
+                glm::scale(glm::vec3(0.2, 0.1, 0.1));
         glUniformMatrix4fv(glGetUniformLocation(shader.programID, "M"), 1, GL_FALSE, glm::value_ptr(Model));
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, sharkTexture.textureID);
-        shark.render();
+        ground.render();
 
-        Model = glm::translate(target);
+        Model = glm::translate(target) *
+                glm::scale(glm::vec3(0.1, 0.1 ,0.1));
         glUniformMatrix4fv(glGetUniformLocation(shader.programID, "M"), 1, GL_FALSE, glm::value_ptr(Model));
+        glBindTexture(GL_TEXTURE_2D, foodTexture.textureID);
         food.render();
     }
 
@@ -91,9 +96,4 @@ void particleSystem::render(Shader shader) {
 
 void particleSystem::setTarget(glm::vec3 newTarget) {
     target = newTarget;
-}
-
-void particleSystem::setShark(glm::vec3 newSharkPos) {
-    sharkPosPrev = sharkPos;
-    sharkPos = newSharkPos;
 }
