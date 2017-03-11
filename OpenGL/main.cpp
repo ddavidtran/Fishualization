@@ -60,6 +60,13 @@ GLFWwindow* Initialize()
         fprintf( stderr, "Failed to initialize GLFW\n" );
         return NULL;
     }
+    // Make sure we are getting a GL context of at least version 3.3
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+
 
 // Open a window and create its OpenGL context
     // GLFWwindow* window; // (In the accompanying source code, this variable is global)
@@ -97,7 +104,7 @@ int main() {
     glfwInit();
 
     glfwSwapInterval(1);
-    myShader.createShader("vertexshader.glsl", "fragmentshader.glsl");
+    myShader.createShader("/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/cmake-build-debug/vertexshader.glsl", "/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/cmake-build-debug/fragmentshader.glsl");
     glUseProgram(myShader.programID);
 
     GLint location_M, location_P, location_V, location_lightPos, location_viewPos;
@@ -111,7 +118,7 @@ int main() {
     // Setup some OpenGL options
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_COLOR_MATERIAL);
-    glm::vec3 fogcolor = glm::vec3(0.5, 0.5, 0.7);
+    glm::vec3 fogcolor = glm::vec3(10, 0.5, 0.7);
     //glClearColor(fogcolor.x ,fogcolor.y, fogcolor.z, 1);//Background color
     glClearDepth(1);
 
@@ -119,17 +126,17 @@ int main() {
     glUniform1i(glGetUniformLocation(myShader.programID, "tex"), 0);
     glUniform3fv(glGetUniformLocation(myShader.programID, "fogcolor"), GL_FALSE, glm::value_ptr(fogcolor));
 
-    glm::vec3 viewPos = glm::vec3(0.0f,1.0f,1.0f);
-    glm::vec3 lightPos = glm::vec3(0.0f,2.0f,0.0f);
+    glm::vec3 viewPos = glm::vec3(0.0f,7.0f,6.0f);
+    glm::vec3 lightPos = glm::vec3(0.0f,3.0f,0.0f);
 
     glm::mat4 View = glm::lookAt(
             viewPos, // camera position
-            glm::vec3(0, 0, 0), // look at origin
+            glm::vec3(0, 1, 0), // look at origin
             glm::vec3(0, 1, 0)  // Head is up
     );
 
     // Create matrices for Projection, Model and View
-    float fov=90.0f;
+    float fov=45.0f;
     glm::mat4 Projection = glm::perspective(fov, (GLfloat) SCR_HEIGHT / (GLfloat) SCR_WIDTH, 0.1f, 1000.0f);
     glm::mat4 Model = glm::mat4();
 

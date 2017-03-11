@@ -14,7 +14,7 @@
 #define GLFW_INCLUDE_GLCOREARB
 #endif
 
-#include <GL\glew.h>
+#include <GL/glew.h>
 #include <GLFW/glfw3.h> // For OpenGL typedefs
 
 

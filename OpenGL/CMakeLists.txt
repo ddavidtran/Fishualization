@@ -47,7 +47,7 @@ if (APPLE)
         set_target_properties(${APP_NAME} PROPERTIES MACOSX_BUNDLE_ICON_FILE ${CMAKE_CURRENT_SOURCE_DIR}/icon.icns)
     else ()
 
-        add_executable(${APP_NAME} MACOSX_BUNDLE main.cpp particleSystem.cpp particleSystem.h particle.cpp particle.h)
+        add_executable(${APP_NAME} MACOSX_BUNDLE main.cpp particleSystem.cpp particleSystem.h particle.cpp particle.h Objects.cpp Shader.cpp Texture.cpp Utilities.cpp Camera.cpp)
     endif ()
 
 #    set_target_properties(${APP_NAME} PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/app.plist.in)

@@ -25,9 +25,10 @@ private:
     glm::vec3 bestPos;
     glm::vec3 target;
     glm::vec3 sharkPos;
+    glm::vec3 ceilPos;
     int fishAmount;
-    Objects fishModel, food, ground;
-    Texture fishTexture, foodTexture;
+    Objects fishModel, food, ground, ceiling;
+    Texture fishTexture, foodTexture, ceilingTex;
 
 public:
     particleSystem(int amount);

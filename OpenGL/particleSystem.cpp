@@ -12,11 +12,14 @@ particleSystem::particleSystem(int amount) {
     sharkPos = glm::vec3(0,0,0);
     bestCost = 11111111;
     bestPos = target;
-    fishModel.readOBJ("C:\\Users\\Jakob\\Documents\\TNM085\\GitProjectFishSchool\\TNM085fish\\OpenGL\\assets\\fish.obj");
-    fishTexture.createTexture("C:\\Users\\Jakob\\Documents\\TNM085\\GitProjectFishSchool\\TNM085fish\\OpenGL\\assets\\fish.tga");
-    ground.readOBJ("C:\\Users\\Jakob\\Documents\\TNM085\\GitProjectFishSchool\\TNM085fish\\OpenGL\\assets\\ground.obj");
-    foodTexture.createTexture("C:\\Users\\Jakob\\Documents\\TNM085\\GitProjectFishSchool\\TNM085fish\\OpenGL\\assets\\Bread.tga");
-    food.readOBJ("C:\\Users\\Jakob\\Documents\\TNM085\\GitProjectFishSchool\\TNM085fish\\OpenGL\\assets\\bread.obj");
+    fishModel.readOBJ("/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/assets/fish.obj");
+    fishTexture.createTexture("/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/assets/fish.tga");
+    ground.readOBJ("/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/assets/ground.obj");
+    foodTexture.createTexture("/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/assets/Bread.tga");
+    food.readOBJ("/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/assets/bread.obj");
+    ceiling.createBox(50.0f, 50.0f, 50.0f);
+    ceilingTex.createTexture("/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/assets/water.tga");
+    ceilPos = glm::vec3(0.0f, 6.0f, 0.0f);
 }
 
 //Update the entire swarms movement
@@ -80,15 +83,18 @@ void particleSystem::render(Shader shader) {
         fishModel.render();
 
         glUniform1i(glGetUniformLocation(shader.programID, "fishes"), false);
-        Model = glm::translate(glm::vec3(0,-1,0)) *
-                glm::scale(glm::vec3(0.2, 0.1, 0.1));
+        Model = glm::translate(ceilPos);
         glUniformMatrix4fv(glGetUniformLocation(shader.programID, "M"), 1, GL_FALSE, glm::value_ptr(Model));
-        ground.render();
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, ceilingTex.textureID);
+        glUniform1i(glGetUniformLocation(shader.programID, "ceiling"), true);
+        ceiling.render();
 
         Model = glm::translate(target) *
                 glm::scale(glm::vec3(0.1, 0.1 ,0.1));
         glUniformMatrix4fv(glGetUniformLocation(shader.programID, "M"), 1, GL_FALSE, glm::value_ptr(Model));
         glBindTexture(GL_TEXTURE_2D, foodTexture.textureID);
+        glUniform1i(glGetUniformLocation(shader.programID, "ceiling"), false);
         food.render();
     }
 
