@@ -35,7 +35,7 @@ public:
 
     void updateSwarm();
     void render(Shader shader);
-    void setTarget(glm::vec3 newTarget);
+    void setTarget(glm::vec3 newTarget); 
     void findNeighbours(particle *p, particle neighbours[]);
 
 };

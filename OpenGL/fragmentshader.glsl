@@ -1,4 +1,4 @@
-#version 440
+#version 330 core
 
 uniform vec3 lightPos;
 uniform vec3 viewPos;
@@ -42,6 +42,8 @@ void main() {
     {
         f = 1.0;
     }
-    vec3 lighting = f*(ambient  + (diffuse + specular) * color) + (1.0-f) * fogcolor;
+    //vec3 lighting = f*(ambient  + (diffuse + specular) * color) + (1.0-f) * fogcolor;
+        vec3 lighting = (ambient  + (diffuse + specular) * color);
+
 	fragcolor = vec4(lighting, 1.0);
 }

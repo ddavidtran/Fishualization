@@ -1,4 +1,4 @@
-#version 440
+#version 330 core
 
 layout(location = 0) in vec3 Position;
 layout(location = 1) in vec3 Normal;
@@ -10,6 +10,8 @@ uniform mat4 P;
 uniform float time;
 uniform bool fishes;
 uniform float fishspeed;
+uniform bool ceiling;
+
 
 out vec3 normal;
 out vec2 st;
@@ -23,7 +25,9 @@ void main(){
   if(fishes){
     pos.x = pos.x + fishspeed*(pos.z - 0.2)*0.09*sin(10.0*pos.z + 6.0*time);
   }
-
+  if(ceiling){
+    pos.x = pos.x + 10*sin(10*pos.z + 3*time);
+  }
   gl_Position = (P * V * M) * vec4(pos, 1.0f);
   normal = transpose(inverse(mat3(M))) * Normal;
   FragPos = vec3(M * vec4(pos, 1.0));

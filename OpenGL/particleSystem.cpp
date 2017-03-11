@@ -31,7 +31,7 @@ void particleSystem::updateSwarm() {
         //if(glfwGetTime() < 10) {
             particle neighbours[3];
             findNeighbours(it, neighbours);
-            it->updateParticle(neighbours, target, bestPos, &newBestPos, &bestCost);
+            it->updateParticle(neighbours, target, bestPos, &newBestPos, &bestCost); 
         //}
     }
     bestPos = newBestPos;
