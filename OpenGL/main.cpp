@@ -36,8 +36,8 @@
 #include <GL/glext.h>
 #endif
 
-int SCR_HEIGHT = 1800;
-int SCR_WIDTH = 1800;
+int SCR_HEIGHT = 1000;
+int SCR_WIDTH = 1000;
 
 Camera camera(SCR_HEIGHT, SCR_WIDTH, glm::vec3(0.0f, 0.0f, 0.0f));
 
@@ -70,7 +70,8 @@ GLFWwindow* Initialize()
 
 // Open a window and create its OpenGL context
     // GLFWwindow* window; // (In the accompanying source code, this variable is global)
-    GLFWwindow* window = glfwCreateWindow( SCR_WIDTH, SCR_HEIGHT, "Fish Simulation", NULL, NULL);
+    const GLFWvidmode* vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+    GLFWwindow* window = glfwCreateWindow( vidmode->width, vidmode->height, "Fish Simulation", NULL, NULL);
     if( window == NULL ){
         fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
         glfwTerminate();
@@ -104,7 +105,7 @@ int main() {
     glfwInit();
 
     glfwSwapInterval(1);
-    myShader.createShader("/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/cmake-build-debug/vertexshader.glsl", "/Users/DavidTran/Documents/LinkopingUniversitetSkola/TNM085/ParticleSwarm/TNM085fish/OpenGL/cmake-build-debug/fragmentshader.glsl");
+    myShader.createShader("vertexshader.glsl", "fragmentshader.glsl");
     glUseProgram(myShader.programID);
 
     GLint location_M, location_P, location_V, location_lightPos, location_viewPos;
@@ -164,7 +165,7 @@ int main() {
     /*********************************/
     do{
         camera.move(DT);
-        foodPos = glm::vec3(camera.getMouseX(), camera.getMouseY(), camera.getZPos());
+        foodPos = glm::vec3(camera.getMouseX(), camera.getMouseY(), camera.getZPos()*0.3);
 
 
         glUniform3fv(location_viewPos, GL_FALSE, glm::value_ptr(viewPos));

@@ -17,7 +17,7 @@ const float C3 = 0.3f;   //Neighbour attraction
 const float C4 = 0.1f;   //Shark avoid
 const float DT = 0.05f;
 const float REPULSION_RADIUS = 0.1f;
-const float SPEED_CAP = 0.4f;
+const float SPEED_CAP = 0.3f;
 const float TURN_RATE = 0.04f;
 
 class particle {
