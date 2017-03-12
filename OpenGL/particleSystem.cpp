@@ -12,13 +12,13 @@ particleSystem::particleSystem(int amount) {
     sharkPos = glm::vec3(0,0,0);
     bestCost = 11111111;
     bestPos = target;
-    fishModel.readOBJ("C:\\Users\\Jakob\\Documents\\TNM085\\GitProjectFishSchool\\TNM085fish\\OpenGL\\assets\\fish.obj");
-    fishTexture.createTexture("C:\\Users\\Jakob\\Documents\\TNM085\\GitProjectFishSchool\\TNM085fish\\OpenGL\\assets\\fish.tga");
-    ground.readOBJ("C:\\Users\\Jakob\\Documents\\TNM085\\GitProjectFishSchool\\TNM085fish\\OpenGL\\assets\\ground.obj");
-    foodTexture.createTexture("C:\\Users\\Jakob\\Documents\\TNM085\\GitProjectFishSchool\\TNM085fish\\OpenGL\\assets\\Bread.tga");
-    food.readOBJ("C:\\Users\\Jakob\\Documents\\TNM085\\GitProjectFishSchool\\TNM085fish\\OpenGL\\assets\\bread.obj");
+    fishModel.readOBJ("assets\\fish.obj");
+    fishTexture.createTexture("assets\\fish.tga");
+    ground.readOBJ("assets\\ground.obj");
+    foodTexture.createTexture("assets\\Bread.tga");
+    food.readOBJ("assets\\bread.obj");
     ceiling.createBox(50.0f, 50.0f, 50.0f);
-    ceilingTex.createTexture("C:\\Users\\Jakob\\Documents\\TNM085\\GitProjectFishSchool\\TNM085fish\\OpenGL\\assets\\water.tga");
+    ceilingTex.createTexture("assets\\water.tga");
     ceilPos = glm::vec3(0.0f, 6.0f, 0.0f);
 }
 

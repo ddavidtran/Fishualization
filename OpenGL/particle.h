@@ -8,6 +8,7 @@
 
 #include <vector>
 #include <cmath>
+#include <string>
 #include "glm/glm.hpp"
 #include <glm/gtx/transform.hpp>
 
