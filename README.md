@@ -19,7 +19,7 @@ Move the target with the mouse cursor. To move the target closer or further away
 - [David Tran](https://github.com/ddavidtran)
 - [Anton Sterner](https://github.com/antonsterner)
 - [Jakob Bertlin](https://github.com/Jackbob)
-- Rasmus Ståhl
+- [Rasmus Ståhl](https://github.com/Mt-Rasmus)
 
 As part of the TNM085 Project course @ Linköping University.
 # Demo:
